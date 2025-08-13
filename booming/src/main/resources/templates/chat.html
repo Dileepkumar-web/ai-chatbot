@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gemini AI Chatbot</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a004c, #390062, #000225);
+            background-size: 300% 300%;
+            animation: bgGradient 10s ease infinite;
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+        }
+
+        @keyframes bgGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .main-layout {
+            display: flex;
+            height: 100vh;
+        }
+
+        .branding {
+            width: 45%;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .branding img.logo {
+            width: 1000%;
+            max-width: 520px;
+            max-height: 520px;
+            object-fit: contain;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .branding h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .branding p {
+            font-size: 16px;
+            color: #dddddd;
+            margin-bottom: 30px;
+        }
+
+        .branding .get-started {
+            padding: 12px 30px;
+            font-size: 16px;
+            background: linear-gradient(to right, #ff00cc, #3333ff);
+            border: none;
+            color: white;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .branding .get-started:hover {
+            transform: scale(1.05);
+        }
+
+        .chat-scroll-wrapper {
+            width: 55%;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .chat-container {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            color: black;
+        }
+
+        .chat-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .chat-header h2 {
+            color: #ffffff;
+            font-size: 28px;
+        }
+
+        .chat-bot-icon {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .chat-bot-icon img {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            border: 2px solid #00bfff;
+            background: white;
+        }
+
+        .chat-message {
+            margin: 12px 0;
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 100%;
+            background: #eaf4ff;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .chat-message.user {
+            background: #cceaff;
+            text-align: right;
+        }
+
+        .chat-message.bot {
+            background: #e8f4ff;
+            text-align: left;
+        }
+
+        .chat-message.bot ul {
+            margin-top: 8px;
+            padding-left: 20px;
+        }
+
+        .chat-message.bot ul li {
+            margin-bottom: 15px;
+            font-size: 15.5px;
+            line-height: 1.7;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #00aaff;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #008fd1;
+        }
+
+        @media (max-width: 1000px) {
+            .main-layout {
+                flex-direction: column;
+            }
+
+            .branding, .chat-scroll-wrapper {
+                width: 100%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="main-layout">
+
+    <!-- LEFT Branding Panel -->
+    <div class="branding">
+        <img src="/images/chatt.jpg" alt="University Logo" class="logo">
+        <h1>CHATBOT technology</h1>
+        <p>Explore the future of communication with our smart AI assistant!</p>
+        <button class="get-started" onclick="document.getElementById('question').focus()">Get Started</button>
+    </div>
+
+    <!-- RIGHT Chat Section -->
+    <div class="chat-scroll-wrapper">
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2>Gemini AI Chatbot</h2>
+            </div>
+
+            <div class="chat-bot-icon">
+                <img src="/images/chatt.jpg" alt="Bot Icon">
+            </div>
+
+            <!-- User Question -->
+            <div th:if="${question}">
+                <div class="chat-message user">
+                    <strong>You:</strong> <span th:text="${question}"></span>
+                </div>
+            </div>
+
+            <!-- Gemini Response -->
+            <div th:if="${responseLines}">
+                <div class="chat-message bot">
+                    <strong>Gemini:</strong>
+                    <ul>
+                        <li th:each="line : ${responseLines}" th:text="${line}"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Error fallback if response is empty -->
+            <div th:if="${responseLines == null}">
+                <div class="chat-message bot">
+                    <strong>Gemini:</strong>
+                    <p>Oops! Gemini did not return a response. Please try again.</p>
+                </div>
+            </div>
+
+            <!-- Input Form -->
+            <form th:action="@{/ask}" method="post">
+                <input type="text" id="question" name="question" placeholder="Ask me anything..." required>
+                <input type="submit" value="Ask">
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
