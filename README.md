@@ -63,4 +63,4 @@ Edit src/main/resources/application.properties:
 Copy
 Edit
 http://localhost:8080
-ai
+ai.
