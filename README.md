@@ -1,4 +1,4 @@
-new Gemini AI Chatbot (Spring Boot + Thymeleaf)
+new Gemini AI Chatbot (Spring Boot + Thymeleaf).
 
 A web-based chatbot built with Spring Boot, Thymeleaf, and Google Gemini API.  
 The application allows users to interact with Google's generative AI model through a clean browser-based interface.
