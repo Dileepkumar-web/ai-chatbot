@@ -56,7 +56,7 @@ Edit
 git clone https://github.com/YOUR_USERNAME/gemini-ai-chatbot.git
 cd gemini-ai-chatbot
 2. Configure the API key
-Edit src/main/resources/application.properties:
+Edit src/main/resources/application.properties:/
 
 
 
